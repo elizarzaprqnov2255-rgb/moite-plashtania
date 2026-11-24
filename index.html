@@ -12,16 +12,13 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <title>Моите плащания</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 /* VOICE: brisk, personal, private — amounts per payment, totals only behind the eye
    IDEA: a household payment book with a coloured tab for each kind of bill
    PICTURE: the scoreboard total, huge condensed figures, with month bars; tabs as cards
-   COLOUR and TYPE: warm white, electric cobalt board, coral accent, one bright colour per kind; Barlow Condensed + Inter
+   COLOUR and TYPE: warm white, electric cobalt board, coral accent, one bright colour per kind; the phone's own system font (works offline)
    LAYOUT: home = total + group cards; group = its own board, add form, history, PDF */
-:root{color-scheme:light dark;
+:root{color-scheme:light dark;--sans:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;--fig:-apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,"Segoe UI",Roboto,sans-serif;
 --bg:light-dark(#f7f5f2,#0f1115);--card:light-dark(#ffffff,#191b22);--ink:light-dark(#14151a,#eef0f6);
 --mute:light-dark(#6b6e7a,#9a9eab);--line:light-dark(#e6e3dd,#2a2d37);--red:light-dark(#ec4a24,#ff7a59);
 --redsoft:light-dark(#ffe6de,#3b1f18);--board:light-dark(#2341e0,#1c2fae);--boardink:#ffffff}
@@ -29,21 +26,21 @@
 *{box-sizing:border-box;min-width:0}
 html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 button,a,input,select{touch-action:manipulation}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,-apple-system,sans-serif;overflow-x:clip;
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans);overflow-x:clip;
 padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 main{max-width:560px;margin:0 auto;padding:14px 16px 96px}
 .top{display:flex;align-items:center;gap:8px;min-height:48px;margin-bottom:10px}
-.top h1{flex:1;font:700 24px/1.1 "Barlow Condensed",Inter,sans-serif;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top h1{flex:1;font:700 24px/1.1 var(--fig);margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .back{background:var(--card);color:var(--ink);border:1px solid var(--line);width:44px;min-height:44px;height:44px;padding:0;display:grid;place-items:center}
 .back svg{width:22px;height:22px}
 .pdf{background:var(--card);color:var(--ink);border:1px solid var(--line);min-height:44px;padding:0 14px;font-size:15px}
-.num{font-family:"Barlow Condensed",Inter,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.num{font-family:var(--fig);font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.01em}
 .board{background:var(--board);color:var(--boardink);border-radius:20px;padding:22px 22px 18px;position:relative;overflow:hidden}
 .board::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--acc,var(--red))}
 .board .lbl{font-size:14px;color:rgba(255,255,255,.75);position:relative}
 .board .total{font-size:clamp(48px,14vw,76px);font-weight:700;line-height:1;margin:4px 0 14px;position:relative}
 .stats{display:flex;gap:22px;flex-wrap:wrap;font-size:14px;color:rgba(255,255,255,.75);position:relative}
-.stats b{display:block;color:var(--boardink);font:700 26px/1.1 "Barlow Condensed",sans-serif}
+.stats b{display:block;color:var(--boardink);font:700 26px/1.1 var(--fig)}
 .bars{display:flex;align-items:flex-end;gap:6px;height:56px;margin-top:16px}
 .bars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
 .bars i{display:block;width:100%;background:rgba(255,255,255,.25);border-radius:4px 4px 0 0;min-height:3px}
@@ -57,18 +54,18 @@ main{max-width:560px;margin:0 auto;padding:14px 16px 96px}
 .pin{position:fixed;inset:0;background:rgba(10,12,20,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
 .pin.open{display:flex}
 .pin form{margin:0;width:min(340px,100%);grid-template-columns:1fr;box-shadow:0 20px 50px rgba(0,0,0,.3)}
-.pin h2{margin:0;font:700 22px/1.2 "Barlow Condensed",sans-serif}
+.pin h2{margin:0;font:700 22px/1.2 var(--fig)}
 .pin p{margin:0;color:var(--mute);font-size:14px}
-.pin input{font:600 28px "Barlow Condensed",sans-serif;letter-spacing:.4em;text-align:center}
+.pin input{font:600 28px var(--fig);letter-spacing:.4em;text-align:center}
 .sect{display:flex;justify-content:space-between;align-items:center;margin:24px 2px 10px}
-.sect h2{margin:0;font:700 20px/1.2 "Barlow Condensed",sans-serif}
+.sect h2{margin:0;font:700 20px/1.2 var(--fig)}
 .link{background:transparent;color:var(--mute);min-height:40px;padding:0 4px;font-size:15px;font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .card{position:relative;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:5px 5px 5px 9px;min-height:40px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
 .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
 .card .no{color:var(--mute);font-weight:500;margin-right:3px}
 .card .nm{font-weight:600;font-size:13px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.card .sm{font:700 17px/1.1 "Barlow Condensed",sans-serif;margin-top:1px}
+.card .sm{font:700 17px/1.1 var(--fig);margin-top:1px}
 .card .mt{font-size:11px;line-height:1.2;color:var(--mute);font-weight:400;margin-top:auto}
 .card.add{min-height:40px;border-style:dashed;align-items:center;justify-content:center;color:var(--mute);font-size:13px;padding-left:6px}
 .card.add::before{display:none}
@@ -81,23 +78,23 @@ main{max-width:560px;margin:0 auto;padding:14px 16px 96px}
 form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
 label{font-size:13px;color:var(--mute);display:grid;gap:4px}
 label.full{grid-column:1/-1}
-input,select{font:16px Inter,sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px;min-height:46px;width:100%;-webkit-appearance:none;appearance:none}
+input,select{font:16px var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px;min-height:46px;width:100%;-webkit-appearance:none;appearance:none}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
 input:focus,select:focus,button:focus-visible{outline:2px solid var(--red);outline-offset:1px}
 .amt{position:relative}.amt input{padding-right:30px}.amt::after{content:"€";position:absolute;right:12px;bottom:12px;color:var(--mute)}
 .btns{grid-column:1/-1;display:flex;gap:10px}
-button{font:600 16px Inter,sans-serif;border:0;border-radius:12px;min-height:48px;padding:0 18px;cursor:pointer}
+button{font:600 16px var(--sans);border:0;border-radius:12px;min-height:48px;padding:0 18px;cursor:pointer}
 .primary{background:var(--red);color:#fff;flex:1}
 .ghost{background:transparent;color:var(--mute);border:1px solid var(--line)}
 .err{grid-column:1/-1;color:var(--red);font-size:14px;margin:0;display:none}
 .month{margin-top:26px}
 .mhead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:6px}
-.mhead h3{margin:0;font:700 20px/1.2 "Barlow Condensed",sans-serif;text-transform:capitalize}
+.mhead h3{margin:0;font:700 20px/1.2 var(--fig);text-transform:capitalize}
 .mhead .num{font-size:20px;font-weight:700}
 ul{list-style:none;margin:0;padding:0}
 li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line)}
 .day{width:46px;text-align:center;line-height:1;border-left:4px solid var(--c);padding-left:4px}
-.day b{display:block;font:700 26px "Barlow Condensed",sans-serif}
+.day b{display:block;font:700 26px var(--fig)}
 .day small{font-size:12px;color:var(--mute)}
 .what b{display:block;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .note{color:var(--mute);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
@@ -189,8 +186,8 @@ const DEFAULT_KINDS = [
   {id:'net',name:'Интернет',color:'#14b8a6'},{id:'phone',name:'Телефон',color:'#ff4f9a'}];
 const PIN = '3890';
 let unlocked = false;
-let items = [], kinds = DEFAULT_KINDS.slice(), view = 'home', db = null, col = null, kindsDoc = null, dl = null;
-let mode = 'local', editId = null, undoItem = null, toastT = null, manage = false;
+let items = [], kinds = DEFAULT_KINDS.slice(), view = 'home';
+let editId = null, undoItem = null, toastT = null, manage = false;
 
 const today = () => { const d = new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
 const parseD = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y,m-1,d); };
@@ -209,7 +206,7 @@ function loadLocal(){
   try{ items = (JSON.parse(localStorage.getItem(LS))||[]).map(clean); }catch(e){ items = []; }
   try{ const k = JSON.parse(localStorage.getItem(LSK)); if(Array.isArray(k)&&k.length) kinds = k; }catch(e){}
 }
-function saveLocal(){ try{ localStorage.setItem(LS, JSON.stringify(items)); localStorage.setItem(LSK, JSON.stringify(kinds)); }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem(LS, JSON.stringify(items)); localStorage.setItem(LSK, JSON.stringify(kinds)); return true; }catch(e){ return false; } }
 
 /* ---------- routing ---------- */
 function route(){
@@ -303,18 +300,16 @@ function showToast(msg, withUndo){
   $('toastMsg').textContent = msg; $('undo').style.display = withUndo?'':'none';
   $('toast').style.display='flex'; clearTimeout(toastT); toastT=setTimeout(()=>{$('toast').style.display='none'; undoItem=null;},5000);
 }
-const failMsg = err => err && err.code==='invalid_argument' ? 'Нямаш права да записваш тук.' : err && err.code==='quota_exceeded' ? 'Мястото за данни е запълнено.' : 'Не успях да запиша. Опитай пак.';
+const failMsg = err => err && err.code==='storage' ? 'Телефонът не позволи записа (може би е в режим „Частно сърфиране“).' : 'Не успях да запиша. Опитай пак.';
 async function put(item){
-  if(mode==='db'){ const {id,...body}=item; await col.doc(id).set(body); }
-  else { const i=items.findIndex(x=>x.id===item.id); if(i<0) items.push(item); else items[i]=item; saveLocal(); render(); }
+  const i=items.findIndex(x=>x.id===item.id); if(i<0) items.push(item); else items[i]=item;
+  if(!saveLocal()) throw {code:'storage'}; render();
 }
 async function remove(id){
-  if(mode==='db'){ await col.doc(id).delete(); }
-  else { items = items.filter(x=>x.id!==id); saveLocal(); render(); }
+  items = items.filter(x=>x.id!==id); saveLocal(); render();
 }
 async function saveKinds(next){
-  if(mode==='db'){ await kindsDoc.set({list:next}); }
-  else { kinds = next; saveLocal(); render(); }
+  kinds = next; saveLocal(); render();
 }
 const newId = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 
@@ -358,7 +353,7 @@ async function addKind(){
   const used = kinds.map(k=>k.color); const color = PALETTE.find(c=>!used.includes(c)) || PALETTE[kinds.length%PALETTE.length];
   const k = {id:newId('k'), name, color};
   addingKind = true;
-  try{ await saveKinds([...kinds,k]); $('kName').value=''; $('newkind').classList.remove('open'); kinds=kinds.some(x=>x.id===k.id)?kinds:[...kinds,k]; go(k.id); }
+  try{ await saveKinds([...kinds,k]); $('kName').value=''; $('newkind').classList.remove('open'); go(k.id); }
   catch(err){ setStatus(failMsg(err)); }
   finally{ addingKind = false; }
 }
@@ -409,11 +404,33 @@ function clip(ctx, text, w){
   while(text.length && ctx.measureText(text+'…').width>w) text=text.slice(0,-1);
   return text+'…';
 }
+/* A tiny PDF writer: one JPEG picture of the table per A4 page. No library, no internet. */
+function canvasJpeg(c){ return new Promise((res,rej)=>c.toBlob(b=>b?b.arrayBuffer().then(a=>res(new Uint8Array(a)),rej):rej(new Error('jpeg')),'image/jpeg',0.92)); }
+async function makePdf(canvases){
+  const enc = new TextEncoder(), parts = [], off = []; let len = 0;
+  const push = x => { const b = typeof x==='string' ? enc.encode(x) : x; parts.push(b); len += b.length; };
+  const obj = (n, f) => { off[n] = len; push(n+' 0 obj\n'); f(); push('\nendobj\n'); };
+  const n = canvases.length, PW = 595.28, PH = 841.89;
+  push('%PDF-1.4\n');
+  obj(1, ()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2, ()=>push('<< /Type /Pages /Kids ['+canvases.map((_,i)=>(3+3*i)+' 0 R').join(' ')+'] /Count '+n+' >>'));
+  for(let i=0;i<n;i++){
+    const p = 3+3*i, c = canvases[i], jpg = await canvasJpeg(c);
+    const draw = 'q '+PW+' 0 0 '+PH+' 0 0 cm /Im0 Do Q';
+    obj(p, ()=>push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im0 '+(p+2)+' 0 R >> >> /Contents '+(p+1)+' 0 R >>'));
+    obj(p+1, ()=>push('<< /Length '+draw.length+' >>\nstream\n'+draw+'\nendstream'));
+    obj(p+2, ()=>{ push('<< /Type /XObject /Subtype /Image /Width '+c.width+' /Height '+c.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\nstream\n'); push(jpg); push('\nendstream'); });
+  }
+  const total = 3+3*n, xref = len;
+  let t = 'xref\n0 '+total+'\n0000000000 65535 f \n';
+  for(let k=1;k<total;k++) t += String(off[k]).padStart(10,'0')+' 00000 n \n';
+  push(t+'trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF\n');
+  return new Blob(parts, {type:'application/pdf'});
+}
 async function buildPdf(){
   const k = view==='all' ? null : kindOf(view);
   const rows = shownItems().slice().sort((a,b)=>a.date.localeCompare(b.date)||a.created-b.created);
-  try{ const sample='Дата Сума Основание 0123456789 €'; await Promise.all([document.fonts.load('400 22px Inter',sample),document.fonts.load('600 22px Inter',sample)]); }catch(e){}
-  const W=1190,H=1684,M=90,RH=44,FONT='Inter, Arial, sans-serif';
+  const W=1190,H=1684,M=90,RH=44,FONT='-apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, "Segoe UI", Roboto, Arial, sans-serif';
   const cols = k ? [{t:'Дата',x:M,w:190},{t:'Сума',x:M+190,w:200,r:true},{t:'Основание',x:M+430,w:W-M-(M+430)}]
                  : [{t:'Дата',x:M,w:170},{t:'Сума',x:M+170,w:180,r:true},{t:'Вид',x:M+380,w:200},{t:'Основание',x:M+590,w:W-M-(M+590)}];
   const firstTop = 300, otherTop = 150, bottom = H-140;
@@ -421,7 +438,7 @@ async function buildPdf(){
   const pages = []; let i=0; pages.push(rows.slice(0,per1)); i=per1;
   while(i<rows.length){ pages.push(rows.slice(i,i+perN)); i+=perN; }
   const total = sumOf(rows), showTotal = unlocked;
-  const pdf = new window.jspdf.jsPDF({unit:'pt',format:'a4',compress:true});
+  const canvases = [];
   pages.forEach((pr,pi)=>{
     const c = document.createElement('canvas'); c.width=W; c.height=H; const x = c.getContext('2d');
     x.fillStyle='#fff'; x.fillRect(0,0,W,H); x.fillStyle='#141413'; x.textBaseline='middle';
@@ -452,19 +469,16 @@ async function buildPdf(){
     }
     x.font=`400 18px ${FONT}`; x.fillStyle='#6c6b66'; x.textAlign='right';
     x.fillText('Стр. '+(pi+1)+' от '+pages.length,W-M,H-70);
-    if(pi>0) pdf.addPage();
-    pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',0,0,595.28,841.89);
+    canvases.push(c);
   });
-  return pdf.output('arraybuffer');
+  return makePdf(canvases);
 }
 $('pdf').addEventListener('click', async ()=>{
-  if(!window.jspdf){ setStatus('PDF модулът още се зарежда. Опитай пак след малко.'); return; }
   const b=$('pdf'); b.disabled=true; b.textContent='…';
   try{
     const buf = await buildPdf();
     const name = (view==='all'?'Всички плащания':'Плащания '+kindOf(view).name)+' '+fmtD(today())+'.pdf';
-    if(dl){ await dl.save({filename:name, data:buf}); }
-    else {
+    {
       const file = new File([buf], name, {type:'application/pdf'});
       if(navigator.canShare && navigator.canShare({files:[file]})){
         try{ await navigator.share({files:[file], title:name}); }catch(e){ if(e && e.name==='AbortError') return; throw e; }
@@ -475,7 +489,7 @@ $('pdf').addEventListener('click', async ()=>{
       }
     }
   }catch(err){
-    if(!err || err.code!=='declined') setStatus(err && err.code==='host_unavailable' ? 'Това приложение не може да запише файла. Отвори линка в браузър.' : 'PDF не можа да се запише.');
+    setStatus('PDF не можа да се създаде.');
   }finally{ b.disabled=false; b.textContent='PDF'; }
 });
 
@@ -486,33 +500,12 @@ let lastTap = 0;
 document.addEventListener('touchend', e=>{ const t=Date.now(); if(t-lastTap<300 && !e.target.closest('input,select,textarea')) e.preventDefault(); lastTap=t; }, {passive:false});
 
 /* ---------- offline ---------- */
-if('serviceWorker' in navigator && location.protocol==='https:'){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
 /* ---------- start ---------- */
 loadLocal(); route();
 
 
-(async ()=>{
-  try{ dl = window.claude && await window.claude.use('downloads'); }catch(e){ dl=null; }
-  render();
-})();
-(async ()=>{
-  try{ db = window.claude && await window.claude.use('db'); }catch(e){ db=null; }
-  if(!db){ mode='local'; setBase(''); return; }
-  mode='db'; items = []; render(); col = db.collection('payments'); kindsDoc = db.doc('settings/kinds');
-  const timer = setTimeout(()=>setBase('Няма връзка в момента — данните може да не са актуални.'),10000);
-  kindsDoc.onSnapshot(snap=>{
-    const l = snap.exists && snap.data().list;
-    kinds = Array.isArray(l) && l.length ? l.filter(k=>k&&typeof k.id==='string'&&typeof k.name==='string').map(k=>({id:k.id,name:k.name,color:safeColor(k.color)})) : DEFAULT_KINDS.slice();
-    const h = location.hash.replace('#',''); if(view==='home' && h.startsWith('vid-') && kinds.some(k=>k.id===h.slice(4))) view=h.slice(4);
-    render();
-  }, ()=>{});
-  col.onSnapshot(snap=>{
-    items = snap.docs.map(d=>clean({id:d.id,...d.data()}));
-    if(!snap.metadata.fromCache){ clearTimeout(timer); if(baseStatus) setBase(''); }
-    render();
-  }, err=>{ clearTimeout(timer); setBase('Данните не могат да се заредят сега.'); });
-})();
 }
 </script>
 </body>
